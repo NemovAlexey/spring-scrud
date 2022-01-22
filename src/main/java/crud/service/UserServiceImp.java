@@ -21,4 +21,9 @@ public class UserServiceImp implements UserService {
     public User show(int id) {
         return userDao.show(id);
     }
+
+    @Override
+    public void save(User user) {
+        userDao.save(user);
+    }
 }

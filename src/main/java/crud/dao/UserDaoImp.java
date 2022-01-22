@@ -8,6 +8,7 @@ import java.util.List;
 
 @Repository
 public class UserDaoImp implements UserDao {
+    private static long USERS_COUNT;
     private final List<User> users;
 
     {
@@ -26,5 +27,11 @@ public class UserDaoImp implements UserDao {
     @Override
     public User show(int id) {
         return users.stream().filter(user -> user.getId() == id).findAny().orElse(null);
+    }
+
+    @Override
+    public void save(User user) {
+        user.setId(++USERS_COUNT);
+        users.add(user);
     }
 }
