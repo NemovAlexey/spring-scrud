@@ -14,7 +14,7 @@ public class UserDaoImp implements UserDao {
     {
         users = new ArrayList<>();
         for (int i = 1; i <= 5; i++) {
-            users.add(new User((long) i, "Aleksei" + i,
+            users.add(new User(++USERS_COUNT, "Aleksei" + i,
                     "Nemov" + i, "nemov" + i + "@mail.ru"));
         }
     }
@@ -34,4 +34,18 @@ public class UserDaoImp implements UserDao {
         user.setId(++USERS_COUNT);
         users.add(user);
     }
+
+    @Override
+    public void update(int id, User user) {
+        User userToUpdate = show(id);
+        userToUpdate.setFirstName(user.getFirstName());
+        userToUpdate.setLastName(user.getLastName());
+        userToUpdate.setEmail(user.getEmail());
+    }
+
+    @Override
+    public void delete(int id) {
+        users.removeIf(u -> u.getId() == id);
+    }
+
 }

@@ -16,6 +16,16 @@
         <td th:text="${user.getLastName()}">
         <td th:text="${user.getEmail()}">
     </tr>
+
 </table>
+<br/>
+<hr/>
+<a th:href="@{/users/{id}/edit(id=${user.getId()})}">Edit</a>
+<form th:action="@{/users/{id}/edit(id=${user.getId()})}">
+    <input type="submit" value="Edit">
+</form>
+<form th:method="delete" th:action="@{/users/{id}(id=${user.getId()})}">
+    <input type="submit" value="Delete"/>
+</form>
 </body>
 </html>
