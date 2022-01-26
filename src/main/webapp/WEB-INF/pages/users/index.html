@@ -6,11 +6,13 @@
 </head>
 <body>
 
-<table th:width="300px" th:border="1" style="border-collapse:collapse;">
+<table th:width="500px" th:border="1" style="border-collapse:collapse;">
     <tr>
         <th><b>First Name</b></th>
         <th><b>Last Name</b></th>
         <th><b>E-mail</b></th>
+        <th><b>Edit</b></th>
+        <th><b>Delete</b></th>
     </tr>
     <th:block th:each="user : ${users}">
         <tr>
@@ -20,6 +22,16 @@
             </td>
             <td th:text="${user.getLastName()}">
             <td th:text="${user.getEmail()}">
+            <td>
+                <form th:action="@{/users/{id}/edit(id=${user.getId()})}">
+                    <input type="submit" value="Edit">
+                </form>
+            </td>
+            <td>
+                <form th:method="delete" th:action="@{/users/{id}(id=${user.getId()})}">
+                    <input type="submit" value="Delete"/>
+                </form>
+            </td>
         </tr>
     </th:block>
 </table>

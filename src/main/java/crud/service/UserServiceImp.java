@@ -3,6 +3,7 @@ package crud.service;
 import crud.dao.UserDao;
 import crud.model.User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,26 +15,31 @@ public class UserServiceImp implements UserService {
         this.userDao = userDao;
     }
 
-    public List<User> index() {
-        return userDao.index();
+    @Transactional(readOnly = true)
+    public List<User> allUser() {
+        return userDao.allUsers();
     }
 
-    public User show(int id) {
-        return userDao.show(id);
+    @Transactional(readOnly = true)
+    public User getUser(long id) {
+        return userDao.getUser(id);
     }
 
+    @Transactional
     @Override
     public void save(User user) {
         userDao.save(user);
     }
 
+    @Transactional
     @Override
-    public void update(int id, User user) {
+    public void update(long id, User user) {
         userDao.update(id, user);
     }
 
+    @Transactional
     @Override
-    public void delete(int id) {
+    public void delete(long id) {
         userDao.delete(id);
     }
 }

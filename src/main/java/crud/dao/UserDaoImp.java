@@ -1,51 +1,60 @@
 package crud.dao;
 
 import crud.model.User;
+import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import java.util.List;
 
 @Repository
 public class UserDaoImp implements UserDao {
-    private static long USERS_COUNT;
-    private final List<User> users;
 
-    {
-        users = new ArrayList<>();
-        for (int i = 1; i <= 5; i++) {
-            users.add(new User(++USERS_COUNT, "Aleksei" + i,
-                    "Nemov" + i, "nemov" + i + "@mail.ru"));
-        }
+    private final EntityManagerFactory entityManagerFactory;
+
+    public UserDaoImp(EntityManagerFactory entityManagerFactory) {
+        this.entityManagerFactory = entityManagerFactory;
     }
 
     @Override
-    public List<User> index() {
-        return users;
+    @SuppressWarnings("unchecked")
+    public List<User> allUsers() {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        return em.createQuery("from User").getResultList();
     }
 
     @Override
-    public User show(int id) {
-        return users.stream().filter(user -> user.getId() == id).findAny().orElse(null);
+    public User getUser(long id) {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        return em.find(User.class, id);
     }
 
     @Override
     public void save(User user) {
-        user.setId(++USERS_COUNT);
-        users.add(user);
+        EntityManager em = entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
+        em.persist(user);
+        em.getTransaction().commit();
+        em.close();
     }
 
     @Override
-    public void update(int id, User user) {
-        User userToUpdate = show(id);
-        userToUpdate.setFirstName(user.getFirstName());
-        userToUpdate.setLastName(user.getLastName());
-        userToUpdate.setEmail(user.getEmail());
+    public void update(long id, User user) {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
+        em.merge(user);
+        em.getTransaction().commit();
+        em.close();
     }
 
     @Override
-    public void delete(int id) {
-        users.removeIf(u -> u.getId() == id);
+    public void delete(long id) {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
+        em.remove(em.find(User.class, id));
+        em.getTransaction().commit();
+        em.close();
     }
-
 }

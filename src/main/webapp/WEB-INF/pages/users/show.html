@@ -5,7 +5,7 @@
     <title>User</title>
 </head>
 <body>
-<table th:width="300px" th:border="1" style="border-collapse:collapse;">
+<table th:width="500px" th:border="1" style="border-collapse:collapse;">
     <tr>
         <th><b>First Name</b></th>
         <th><b>Last Name</b></th>
@@ -20,7 +20,7 @@
 </table>
 <br/>
 <hr/>
-<a th:href="@{/users/{id}/edit(id=${user.getId()})}">Edit</a>
+
 <form th:action="@{/users/{id}/edit(id=${user.getId()})}">
     <input type="submit" value="Edit">
 </form>
